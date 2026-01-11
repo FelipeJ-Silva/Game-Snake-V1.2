@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Snake Game 2.0 - Felipe</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="score-board">
+        <div class="score-box">
+          <small>SCORE</small>
+          <span class="score--value">00</span>
+        </div>
+        <div class="score-box">
+          <small>RECORDE</small>
+          <span class="high-score--value">00</span>
+        </div>
+      </div>
+
+      <div class="game-wrapper">
+        <div class="menu-screen">
+          <span class="game-over">Game Over</span>
+          <span class="final-score">Pontuação: <span>00</span></span>
+
+          <button class="btn-play">
+            <span class="material-symbols-outlined">play_circle</span>
+            Jogar Novamente
+          </button>
+        </div>
+
+        <canvas width="600" height="600"></canvas>
+      </div>
+
+      <div class="controls-hint">Use as setas do teclado para mover</div>
+    </div>
+
+    <script src="/js/script.js"></script>
+  </body>
+</html>

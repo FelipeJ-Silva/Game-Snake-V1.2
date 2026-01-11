@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Press Start 2P', cursive;
+}
+
+body {
+    background-color: #1a1a1a;
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.score-board {
+    display: flex;
+    gap: 50px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.score-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.score-box small {
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.score--value,
+.high-score--value {
+    font-size: 1.5rem;
+    color: #00ff88;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.game-wrapper {
+    position: relative;
+    border: 4px solid #333;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    background-color: #000;
+}
+
+canvas {
+    background-color: #050505;
+    display: block;
+    /* Remove espaços extras */
+    border-radius: 5px;
+}
+
+/* Menu de Game Over */
+.menu-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: none;
+    /* Controlado via JS */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    backdrop-filter: blur(5px);
+}
+
+.game-over {
+    font-size: 3rem;
+    color: #ff3333;
+    text-shadow: 0 0 20px rgba(255, 51, 51, 0.6);
+    margin-bottom: 20px;
+}
+
+.final-score {
+    font-size: 1.2rem;
+    color: #ddd;
+    margin-bottom: 40px;
+}
+
+.btn-play {
+    background: linear-gradient(45deg, #00ff88, #00cc6a);
+    border: none;
+    border-radius: 50px;
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-play:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+}
+
+.controls-hint {
+    font-size: 0.7rem;
+    color: #555;
+    margin-top: 10px;
+}
