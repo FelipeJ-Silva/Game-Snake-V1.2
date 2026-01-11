@@ -60,7 +60,6 @@ body {
 canvas {
     background-color: #050505;
     display: block;
-    /* Remove espaços extras */
     border-radius: 5px;
 }
 
@@ -73,7 +72,6 @@ canvas {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.85);
     display: none;
-    /* Controlado via JS */
     flex-direction: column;
     align-items: center;
     justify-content: center;

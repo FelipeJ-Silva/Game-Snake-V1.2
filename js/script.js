@@ -10,11 +10,11 @@ const buttonPlay = document.querySelector(".btn-play");
 // Tenta carregar o áudio, mas não quebra o jogo se falhar
 const audio = new Audio('assets/audio.mp3');
 
-const size = 30; // Tamanho de cada quadrado
+const size = 30;
 let snake = [];
 let initialPosition = { x: 270, y: 240 };
 let direction, loopId;
-let gameSpeed = 300; // Velocidade inicial em ms
+let gameSpeed = 300;
 let score = 0;
 
 // Carregar recorde do localStorage
@@ -25,8 +25,6 @@ const updateScore = () => {
     score += 10;
     scoreElement.innerText = score;
 
-    // Aumenta a velocidade (diminui o tempo do loop) a cada 50 pontos
-    // Limita a velocidade máxima a 60ms
     if (score % 50 === 0 && gameSpeed > 60) {
         gameSpeed -= 20;
     }
@@ -58,7 +56,7 @@ const drawFood = () => {
     const { x, y, color } = food;
 
     ctx.shadowColor = color;
-    ctx.shadowBlur = 15; // Aumentei o brilho
+    ctx.shadowBlur = 15;
     ctx.fillStyle = color;
     ctx.fillRect(x, y, size, size);
     ctx.shadowBlur = 0;
@@ -68,9 +66,8 @@ const drawSnake = () => {
     ctx.fillStyle = "#ddd";
 
     snake.forEach((position, index) => {
-        // Cabeça da cobra
         if (index == snake.length - 1) {
-            ctx.fillStyle = "#00ff88"; // Cor neon
+            ctx.fillStyle = "#00ff88";
             ctx.shadowColor = "#00ff88";
             ctx.shadowBlur = 10;
         } else {
@@ -87,7 +84,6 @@ const moveSnake = () => {
 
     const head = snake[snake.length - 1];
 
-    // Clonamos a cabeça para calcular a nova posição
     let newHead = { x: head.x, y: head.y };
 
     if (direction == "right") newHead.x += size;
@@ -95,22 +91,14 @@ const moveSnake = () => {
     if (direction == "down") newHead.y += size;
     if (direction == "up") newHead.y -= size;
 
-    snake.push(newHead); // Adiciona a nova cabeça
+    snake.push(newHead);
 
-    // Se não comeu, remove o rabo (movimento padrão)
-    // Se comeu, não remove o rabo (a cobra cresce)
-    // Essa lógica é feita na função checkEat, mas aqui removemos sempre
-    // e lá controlamos se removeu ou não.
-    // Simplificação: Sempre remove o rabo aqui, a menos que coma.
-
-    // Vou manter a lógica do seu código original (push sempre, shift sempre)
-    // mas movi o shift para fora para facilitar a leitura.
     snake.shift();
 };
 
 const drawGrid = () => {
     ctx.lineWidth = 1;
-    ctx.strokeStyle = "#191919"; // Grid mais sutil
+    ctx.strokeStyle = "#191919";
 
     for (let i = 30; i < canvas.width; i += 30) {
         ctx.beginPath();
@@ -131,9 +119,6 @@ const checkEat = () => {
     if (head.x == food.x && head.y == food.y) {
         updateScore();
 
-        // Adiciona um segmento extra (cresce)
-        // Como o moveSnake já deu shift(), precisamos readicionar o rabo antigo
-        // ou simplesmente duplicar a cabeça agora.
         snake.push(head);
 
         try { audio.play(); } catch (e) { }
@@ -141,7 +126,6 @@ const checkEat = () => {
         let x = randomPosition();
         let y = randomPosition();
 
-        // Evita que a comida nasça em cima da cobra
         while (snake.find((position) => position.x == x && position.y == y)) {
             x = randomPosition();
             y = randomPosition();
@@ -161,7 +145,6 @@ const checkCollision = () => {
     const wallCollision =
         head.x < 0 || head.x > canvasLimit || head.y < 0 || head.y > canvasLimit;
 
-    // Verificação de colisão com o próprio corpo
     const selfCollision = snake.find((position, index) => {
         return index < neckIndex && position.x == head.x && position.y == head.y;
     });
@@ -174,7 +157,6 @@ const checkCollision = () => {
 const gameOver = () => {
     direction = undefined;
 
-    // Atualiza Recorde
     if (score > highScore) {
         highScore = score;
         localStorage.setItem('snakeHighScore', highScore);
@@ -183,7 +165,7 @@ const gameOver = () => {
 
     menu.style.display = "flex";
     finalScoreElement.innerText = score;
-    canvas.style.filter = "blur(4px)"; // Blur mais forte
+    canvas.style.filter = "blur(4px)";
 };
 
 const gameLoop = () => {
@@ -192,12 +174,11 @@ const gameLoop = () => {
     ctx.clearRect(0, 0, 600, 600);
     drawGrid();
     drawFood();
-    moveSnake(); // Move primeiro
-    drawSnake(); // Desenha depois
-    checkEat(); // Verifica comida
-    checkCollision(); // Verifica morte
+    moveSnake();
+    drawSnake();
+    checkEat();
+    checkCollision();
 
-    // Loop recursivo com velocidade variável
     loopId = setTimeout(() => {
         gameLoop();
     }, gameSpeed);
@@ -206,14 +187,13 @@ const gameLoop = () => {
 // Reiniciar jogo
 const resetGame = () => {
     score = 0;
-    gameSpeed = 300; // Reseta velocidade
+    gameSpeed = 300;
     scoreElement.innerText = "00";
     menu.style.display = "none";
     canvas.style.filter = "none";
-    snake = [{ x: 270, y: 240 }]; // Reinicia cobra
-    direction = undefined; // Pausa o jogo até apertar tecla
+    snake = [{ x: 270, y: 240 }];
+    direction = undefined;
 
-    // Reposiciona comida para não nascer no lugar padrão da cobra
     food.x = randomPosition();
     food.y = randomPosition();
     food.color = randomColor();
@@ -223,14 +203,10 @@ const resetGame = () => {
 
 buttonPlay.addEventListener("click", resetGame);
 
-// Controle de input com prevenção de bug (virada 180 rápida)
-let lastDirection = ""; // Direção processada no último frame
+let lastDirection = "";
 
 document.addEventListener("keydown", ({ key }) => {
-    // A lógica aqui impede que você mude a direção oposta baseada
-    // na ÚLTIMA direção que a cobra realmente se moveu, não a última tecla apertada.
 
-    // Atualizamos lastDirection baseado na direção atual antes de mudar
     if (direction) lastDirection = direction;
 
     if (key == "ArrowRight" && lastDirection != "left") {
@@ -247,6 +223,5 @@ document.addEventListener("keydown", ({ key }) => {
     }
 });
 
-// Inicia o jogo na tela limpa
 snake = [initialPosition];
 gameLoop();
